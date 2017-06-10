@@ -14,6 +14,7 @@
 		3DB4693C1EE8189100C7F5F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB4693A1EE8189100C7F5F1 /* LaunchScreen.storyboard */; };
 		3DB469471EE8189100C7F5F1 /* Help_TextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB469461EE8189100C7F5F1 /* Help_TextTests.swift */; };
 		3DB469521EE8189100C7F5F1 /* Help_TextUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB469511EE8189100C7F5F1 /* Help_TextUITests.swift */; };
+		3DB469601EE818AC00C7F5F1 /* HelpTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB4695F1EE818AC00C7F5F1 /* HelpTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		3DB4694D1EE8189100C7F5F1 /* Help TextUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Help TextUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DB469511EE8189100C7F5F1 /* Help_TextUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help_TextUITests.swift; sourceTree = "<group>"; };
 		3DB469531EE8189100C7F5F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DB4695F1EE818AC00C7F5F1 /* HelpTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				3DB469311EE8189100C7F5F1 /* AppDelegate.swift */,
 				3DB469331EE8189100C7F5F1 /* ViewController.swift */,
+				3DB4695F1EE818AC00C7F5F1 /* HelpTextView.swift */,
 				3DB469351EE8189100C7F5F1 /* Main.storyboard */,
 				3DB469381EE8189100C7F5F1 /* Assets.xcassets */,
 				3DB4693A1EE8189100C7F5F1 /* LaunchScreen.storyboard */,
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DB469341EE8189100C7F5F1 /* ViewController.swift in Sources */,
+				3DB469601EE818AC00C7F5F1 /* HelpTextView.swift in Sources */,
 				3DB469321EE8189100C7F5F1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

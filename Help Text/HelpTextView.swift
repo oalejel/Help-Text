@@ -20,10 +20,7 @@ class HelpTextView: UIView {
     var label: UILabel!
     let screenBounds = UIScreen.main.bounds
     var isVisible = false
-    
-    
-    private var _theme: HelpTheme!
-    
+        
     private var fillColor: UIColor!
     private var strokeColor: UIColor!
     
@@ -46,20 +43,27 @@ class HelpTextView: UIView {
             shapeLayer.lineWidth = 2
             
             frame = pathFrame
-            frame.origin = CGPoint(x: screenBounds.size.width - (pathFrame.size.width + boxOffset), y: screenBounds.size.height - (pathFrame.size.height + boxOffset))
+            
+            let horizontalSize = UIDevice.current.orientation.isPortrait ? screenBounds.size.width : screenBounds.size.height
+            let verticalSize = UIDevice.current.orientation.isPortrait ? screenBounds.size.height : screenBounds.size.width
+            
+            frame.origin = CGPoint(x: horizontalSize - (pathFrame.size.width + boxOffset), y: verticalSize - (pathFrame.size.height + boxOffset))
             
             layer.addSublayer(shapeLayer)
             
             label.center = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
             addSubview(label)
-            
-//            let coloredBox = UIView(frame: CGRectMake(0,0, 0, 0))
-//            coloredBox.backgroundColor = .yellow
-//            coloredBox.layer.
         }
     }
     
-    init(theme t: HelpTheme) {
+    public class var sharedInstance: HelpTextView {
+        struct Singleton {
+            static let instance = HelpTextView(theme: .Detail)
+        }
+        return Singleton.instance
+    }
+    
+    private init(theme t: HelpTheme) {
         super.init(frame: CGRect.zero)
         setTheme(theme: t)
     }
@@ -69,22 +73,45 @@ class HelpTextView: UIView {
         setTheme(theme: .Detail)
     }
     
-    func show(withFadeDuration fadeDuration: TimeInterval, persistenceDuration: TimeInterval, animated: Bool) {
-        if animated {
-            UIView.animate(withDuration: fadeDuration, delay: 0, options: .curveLinear, animations: {
-                self.alpha = 1
-                self.isVisible = true
-            }, completion: { (done) in
-                UIView.animate(withDuration: fadeDuration, delay: persistenceDuration, options: .curveLinear, animations: {
-                    self.alpha = 0
-                    self.isVisible = false
+    //adapted from swiftspinner
+    private static weak var customSuperview: UIView? = nil
+    private static func cView() -> UIView? {
+        return customSuperview ?? UIApplication.shared.keyWindow
+    }
+    public class func useContainerView(_ sv: UIView?) {
+        customSuperview = sv
+    }
+    
+    public class func present(str: String, theme t: HelpTheme, withFadeDuration fadeDuration: TimeInterval, persistenceDuration: TimeInterval, animated: Bool) {
+        
+        let textView = HelpTextView.sharedInstance
+        textView.setTheme(theme: t)
+        textView.str = str
+        
+        textView.alpha = 0
+        
+        if textView.superview == nil {
+            guard let containerView = cView() else {
+                fatalError("No key window or given view")
+            }
+            
+            containerView.addSubview(textView)
+            
+            if animated {
+                UIView.animate(withDuration: fadeDuration, delay: 0, options: .curveLinear, animations: {
+                    textView.alpha = 1
+                    textView.isVisible = true
                 }, completion: { (done) in
-                    
+                    UIView.animate(withDuration: fadeDuration, delay: persistenceDuration, options: .curveLinear, animations: {
+                        textView.alpha = 0
+                        textView.isVisible = false
+                    }, completion: { (done) in
+                        textView.removeFromSuperview()
+                    })
                 })
-            })
-        } else {
-            self.alpha = 1
-            self.layer.removeAllAnimations()
+            } else {
+                textView.alpha = 1
+            }
         }
     }
 
@@ -99,23 +126,22 @@ class HelpTextView: UIView {
     }
     
     func setTheme(theme: HelpTheme) {
-        switch theme {
-        case .Reminder:
-            fillColor = UIColor(red: 1, green: 0.89, blue: 0.5333, alpha: 1)
-            strokeColor = UIColor(red: 1, green: 0.4862, blue: 0, alpha: 1)
-        case .Warning:
-            fillColor = UIColor(red: 0.996, green: 0.7411, blue: 0.6666, alpha: 1)
-            strokeColor = UIColor(red: 0.898, green: 0.1216, blue: 0, alpha: 1)
-        case .Detail:
-            fillColor = UIColor.white
-            strokeColor = UIColor.darkGray
-        case .Progress:
-            fillColor = UIColor(red: 0.6196, green: 0.996, blue: 0.6745, alpha: 1)
-            strokeColor = UIColor(red: 0, green: 0.5804, blue: 0, alpha: 1)
-        case let .Custom(s, f):
-            fillColor = f
-            strokeColor = s
+            switch theme {
+            case .Reminder:
+                self.fillColor = UIColor(red: 1, green: 0.89, blue: 0.5333, alpha: 1)
+                self.strokeColor = UIColor(red: 1, green: 0.4862, blue: 0, alpha: 1)
+            case .Warning:
+                self.fillColor = UIColor(red: 0.996, green: 0.7411, blue: 0.6666, alpha: 1)
+                self.strokeColor = UIColor(red: 0.898, green: 0.1216, blue: 0, alpha: 1)
+            case .Detail:
+                self.fillColor = UIColor.white
+                self.strokeColor = UIColor.darkGray
+            case .Progress:
+                self.fillColor = UIColor(red: 0.6196, green: 0.996, blue: 0.6745, alpha: 1)
+                self.strokeColor = UIColor(red: 0, green: 0.5804, blue: 0, alpha: 1)
+            case let .Custom(s, f):
+                self.fillColor = f
+                self.strokeColor = s
         }
-
     }
 }

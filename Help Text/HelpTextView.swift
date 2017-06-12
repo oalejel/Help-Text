@@ -115,13 +115,16 @@ class HelpTextView: UIView {
         }
     }
 
-    func hide(animated: Bool) {
+    class func hide(animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.5, animations: { 
-                self.alpha = 0
+                HelpTextView.sharedInstance.alpha = 0
+            }, completion: { (done) in
+                HelpTextView.sharedInstance.removeFromSuperview()
             })
         } else {
-            self.alpha = 0
+            HelpTextView.sharedInstance.alpha = 0
+            HelpTextView.sharedInstance.removeFromSuperview()
         }
     }
     

@@ -12,7 +12,7 @@ class ViewController: UIViewController {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        HelpTextView.present(str:"Warning text!", theme: .Reminder, withFadeDuration: 0.5, persistenceDuration: 2, animated: true)
+        HelpTextView.present(str:"Loading...", theme: .Custom(stroke: .orange, fill: .purple), withFadeDuration: 0.5, persistenceDuration: 2, animated: true)
     }
 }
 
